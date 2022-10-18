@@ -13,7 +13,7 @@ async function authen(user, pass)
     if (query_data.rows.length==1)
     {
         authenticated = true;
-        shop_id=query_data.rows.shop_id;
+        shop_id=query_data.rows[0].shop_id;
     }
     // console.log(authenticated);
     return [authenticated,shop_id];
