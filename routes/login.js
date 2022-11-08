@@ -14,12 +14,13 @@ let password = req.body.password;
 let [authenticated, shop_id] = await authen(username, password)
 console.log(authenticated, shop_id)
 if (authenticated == true) {
-  var table_string = await getTable(shop_id)
+  var table = await getTable(shop_id)
 
   res.render('users', { title: 'Welcome to ATN SHOP',
                         name: username,
-                        table: table_string});
+                        table_string: table});
 }
+
 else {
   res.render('login', { title: 'ATN SHOP',
                         message: 'Wrong username or password'});
