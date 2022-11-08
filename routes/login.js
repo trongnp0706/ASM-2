@@ -42,11 +42,13 @@ else {
 // display for each shop
 router.post('/select_box', async function (req, res, next) {
   let box_string = await gen_box();
+  let table = await display_products(shop_id);
 
   res.render('admin', {
-    title: 'Welcome to admin page',
-    message: 'Wrong username or password. Please try again!',
-    select_box: box_string
+    title: 'ATN shop',
+    message: 'Welcome to ATN shop',
+    select_box: box_string,
+    table_string: table,
   });
 });
 
