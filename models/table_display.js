@@ -39,9 +39,15 @@ async function display_products(shop_id){
         table_string += `</tr>`
     }
 
+    table_string += `<th>
+    <button class="insert-button">Insert</button>
+    <button class="edit-button">Edit</button>
+    <button class="delete-button">Delete</button>
+    </th>`;
+
         table_string += `</table>`;
-        console.log("DATA: -->")
-        console.log(data)
+        // console.log("DATA: -->")
+        // console.log(data)
         return table_string
 }
 module.exports = display_products;
