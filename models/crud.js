@@ -8,7 +8,7 @@ async function crud(req_body) {
   let shop_id = req_body.shop_id;
 
   // update case
-  if (req_body.crud == "update") {
+  if (req_body.crud == "edit") {
     var query = {
       text: `UPDATE products
                 SET name = $2,

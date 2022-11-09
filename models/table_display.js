@@ -31,23 +31,30 @@ async function display_products(shop_id){
     let num_rows = data.rowCount;
     console.log("num rows" + num_rows)
     for(let i=0; i<num_rows; i++){
-        table_string += `<tr>`;
+        table_string += `
+      <form action="crud" method="post">
+        <tr>`;
         for(let j=0; j<num_fileds; j++){
             let cell = data.rows[i][data.fields[j].name]
-            table_string +=`<td>${cell}</td>`
+            table_string += `<td><input type='text' name=${field_name} value=${cell}></td>`;
         }
         table_string += `</tr>`
     }
 
-    table_string += `<th>
-    <button class="insert-button">Insert</button>
-    <button class="edit-button">Edit</button>
-    <button class="delete-button">Delete</button>
-    </th>`;
 
-        table_string += `</table>`;
-        // console.log("DATA: -->")
-        // console.log(data)
-        return table_string
+    // add form submit for insert
+  table_string += `<form action="/user/crud" method="post"><tr>`
+  for (let j = 0; j < num_fields; j++) {
+    let field_name = data.fields[j].name;
+    table_string += `<td><input type='text' name=${field_name}></td>`;
+  }
+
+  table_string += `<td>
+    <button type="submit" name='crud' value='insert'>Insert</button>
+  </td>`;
+
+  table_string += `</tr></form>`;
+  table_string += `</table>`;
+  return table_string;
 }
 module.exports = display_products;

@@ -3,6 +3,7 @@ var router = express.Router();
 var authen = require('../models/authenticator');
 var getTable = require('../models/table_display');
 var gen_box = require('../models/select_box');
+var session;
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
@@ -12,26 +13,27 @@ router.get('/', function(req, res, next) {
 router.post('/', async function(req, res, next) {
 let username = req.body.username;
 let password = req.body.password;
+session = req.session;
+
 let [authenticated, shop_id, role] = await authen(username, password)
 console.log(authenticated, shop_id, role)
 //show user page
 if (authenticated == true & role == 'shop') {
   var table = await getTable(shop_id)
 
-  res.render('users', { title: 'Welcome to ATN SHOP',
-                        name: username,
-                        table_string: table});
+  session.user_id = username;
+    session.shopId = shopId;
+    session.role = role;
+
+    res.redirect('/users');
 }
 //show admin page
 else if (authenticated == true & role == 'admin') {
-  let box_string = await gen_box();
-  let table = await display_products(shop_id)
-  res.render('admin', {
-    title: 'Welcome to Admin page of ATN-SHOP',
-    name: username,
-    select_box: box_string,
-    table_string: table
-  });
+  session.user_id = username;
+    session.shopId = shopId;
+    session.role = role;
+
+    res.redirect('/admin');
 }
 else {
   res.render('login', { title: 'ATN SHOP',
@@ -39,19 +41,11 @@ else {
 }
 });
 
-// display for each shop
-router.post('/select_box', async function (req, res, next) {
-  let box_string = await gen_box();
-  let table = await display_products(shop_id);
-
-  res.render('admin', {
-    title: 'ATN shop',
-    message: 'Welcome to ATN shop',
-    select_box: box_string,
-    table_string: table,
-  });
-});
-
+// logout
+router.get('/logout', function (req, res, next) {
+  req.session.destroy();
+  res.render('index', { title: 'ATN SHOP' });
+})
 
 
 module.exports = router;
